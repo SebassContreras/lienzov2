@@ -126,3 +126,9 @@ Why: `src/service` held 165 files, 32 of them loose, and a tool, its logic and i
 - What Changed: a project keeps its written brand guide in `projects/<project>/brand.md` (Markdown, up to 20 000 characters), taken as `guide` by `project_create` / `project_update` and returned by `project_inspect`. `project_inspect` and `project_update` share one brand font rule (`brandFontNotices`), which now also names a project font that is not declared. `scene_generate_speech` saves clips in `assets/voice/<scene>/` instead of the root of `assets/`. A7 documents the asset folder convention (`brand/`, `voice/<scene>/`, `<scene>/`).
 - Why: the brand guide had nowhere to live, so it ended up in one video's brief; a project's undeclared fonts went unreported; generated clips at the root of `assets/` could not be told apart from the brand's files or from other videos'.
 - Replaced Items: `project.json` as the place of the brand guide (A7 wording); `project_update`'s inline font notice code.
+
+## 2026-10-31 — research principle gated by decision impact
+- Scope: `ENGINEERING.md` §1, §9, §10, `AGENTS.md`, spectrace skills.
+- What Changed: §9 now requires research only when the choice is hard to reverse, depends on an outside fact, or breaks a factual tie, and cites sources as `Source: <url> (accessed YYYY-MM-DD)`. §1 and §10 headings match the spectrace template so `spectrace-init --upgrade` recognises them. AGENTS.md principle lists name DRY, research and trade-offs; spectrace skills updated to the current suite.
+- Why: Spectrace added principle 7: research is required only when the choice is hard to reverse, depends on a fact outside the repository, or breaks a factual tie. Mandatory research on every choice invites invented citations and ritual browsing; gating it keeps citations where they change the decision.
+- Replaced Items: §9 "Research & Cite Sources for Non-Obvious Decisions".

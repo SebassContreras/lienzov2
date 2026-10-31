@@ -6,7 +6,7 @@ This document defines the craftsmanship, code quality standards, and software en
 
 ## ⚙️ Core Engineering Principles
 
-### 1. KISS / YAGNI — No Over-Engineering & Avoid Speculative Generality
+### 1. KISS / YAGNI — No Over-Engineering
 - Apply every principle with proportionality.
 - Do not create premature interfaces, adapters, or abstractions for a single use case or a hypothetical future.
 - Introduce an abstraction **only** when there are 2+ concrete uses, 2+ distinct vendors/implementations, or when automated testing genuinely requires a boundary seam.
@@ -50,11 +50,17 @@ This document defines the craftsmanship, code quality standards, and software en
   - `UPPER_SNAKE_CASE`: true constants, configuration globals, enum keys.
 - Language policy: UI text and error messages in Spanish (A16); code, docs, and commits in English.
 
-### 9. Research & Cite Sources for Non-Obvious Decisions
-- Base non-obvious architecture, protocol, and format choices on official specifications, RFCs, issue trackers, or domain standards (e.g. NLE timeline conventions, SMPTE, Vite chunking).
-- Cite documentation URLs or issue references directly in the spec's Design section or code comments.
+### 9. Validate with Research — Only When It Changes the Decision
+- Research is not a ritual. Look it up only when at least one holds:
+  - the choice is hard to reverse (file format, protocol, public surface, contract shape);
+  - the answer is a fact outside this repository (NLE timeline conventions, SMPTE, RFCs, Vite chunking, version behaviour, licence terms);
+  - two credible options tie and the tie-break is factual, not stylistic.
+- Do not research what a root contract already states, what the stack's own documentation defines, or a local, reversible change you can settle by running it.
+- Source order: official specification or documentation, then maintainer issue or release notes, then vendor blog. One or two sources per question; stop when a primary source settles it.
+- Cite what you used where the decision lives — `D<n>` in the spec, a code comment, or `CHANGES.md` — as `Source: <url> (accessed YYYY-MM-DD)`.
+- A non-obvious claim that could have a source and has none is a review finding.
 
-### 10. Document Trade-offs (Pros, Cons, and Mitigations)
+### 10. Document Trade-offs
 - Every significant technical choice has trade-offs.
 - Document pros, cons, and active mitigations directly in the relevant spec (`D<n>`), code comments, or `CHANGES.md`.
 
