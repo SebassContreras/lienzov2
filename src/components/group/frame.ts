@@ -15,6 +15,9 @@ export const FRAMES = [
 
 type Framed = Box & { frame: Frame };
 
+/** Whether a group draws a window frame, and so paints its `frameColor` and `bodyColor`. */
+export const hasFrame = (g: { frame: Frame }): boolean => g.frame !== "none";
+
 /** Height of the title bar of a browser or terminal window. */
 export const barHeight = (b: Box) => Math.max(24, Math.min(56, b.h * 0.09));
 

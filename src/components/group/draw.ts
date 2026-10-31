@@ -6,7 +6,7 @@ import { type Ctx, withTransform } from "../../engine/paint.ts";
 import type { Anim } from "../../model/model.ts";
 import type { DrawContext } from "../descriptor.ts";
 import type { GroupEl } from "./descriptor.ts";
-import { barHeight, bezel, bodyBox, frameRadius } from "./frame.ts";
+import { barHeight, bezel, bodyBox, frameRadius, hasFrame } from "./frame.ts";
 
 const NONE = { kind: "none" } as const;
 
@@ -33,7 +33,7 @@ export function drawGroup(
   }
   const body = bodyBox(el);
   withTransform(ctx, boxOf(el), own, () => {
-    if (el.frame !== "none") {
+    if (hasFrame(el)) {
       // the frame's text settings must not reach the children
       ctx.save();
       drawFrame(ctx, el);
@@ -44,7 +44,7 @@ export function drawGroup(
       ctx.scale(body.w / (el.cw || 1), body.h / (el.ch || 1));
       drawChildren();
     };
-    if (el.frame !== "none") withClip(ctx, bodyPath(el), content);
+    if (hasFrame(el)) withClip(ctx, bodyPath(el), content);
     else if (el.clip) withClip(ctx, boxPath(el), content);
     else content();
   });

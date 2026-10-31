@@ -18,10 +18,10 @@ import {
   widget,
 } from "../fields/index.ts";
 import { drawGroup } from "./draw.ts";
-import { FRAMES, type Frame } from "./frame.ts";
+import { FRAMES, type Frame, hasFrame } from "./frame.ts";
 
 const V = { section: "Ventana" };
-const framed = (p: Parent) => p.frame !== "none";
+const framed = (p: Parent) => hasFrame(p as { frame: Frame });
 
 /** A field scenes from before 017 lack: parsed as its default. */
 const later = <F extends { default: unknown; schema: z.ZodType }>(f: F): F => ({
