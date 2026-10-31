@@ -6,6 +6,7 @@
  * if images, 3D or particles are present.
  */
 
+import { type Frame, hasFrame } from "../../components/group/frame.ts";
 import {
   compositeRgba,
   contrastRatio,
@@ -95,8 +96,12 @@ function getElementFills(el: Record<string, unknown>): {
     }
   }
 
-  // Groups with bodyColor
-  if (typeof el.bodyColor === "string") {
+  // A group paints its bodyColor only inside a window frame (087/D1)
+  if (
+    el.kind === "group" &&
+    hasFrame(el as { frame: Frame }) &&
+    typeof el.bodyColor === "string"
+  ) {
     const c = parseColor(el.bodyColor);
     return { fills: [c], hasFill: true };
   }

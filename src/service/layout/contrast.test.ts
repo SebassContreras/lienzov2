@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
+import type { Frame } from "../../components/group/frame.ts";
+import { createElement } from "../../components/index.ts";
 import {
   contrastRatio,
   parseColor,
   relativeLuminance,
 } from "../../engine/color.ts";
+import { ElementSchema } from "../../model/element-schema.ts";
 import {
   defaultImage,
   defaultParticles,
@@ -319,5 +322,175 @@ describe("text over one-color particles", () => {
     const diags = inspectLayout(sceneWith(particles), [0]);
 
     expect(diags.some((d) => d.code === "unverifiable_contrast")).toBe(true);
+  });
+});
+
+describe("what a group adds to a text's backdrop", () => {
+  const white = () => {
+    const scene = defaultScene();
+    scene.background = {
+      ...scene.background,
+      color: "#ffffff",
+      gradient: false,
+    };
+    return scene;
+  };
+  const group = (frame: Frame) => ({
+    ...createElement("group"),
+    id: "g",
+    x: 0,
+    y: 0,
+    w: 1080,
+    h: 1920,
+    frame,
+    bodyColor: "#0b1220",
+  });
+  const lightRect = {
+    ...defaultRect(),
+    id: "light",
+    x: 0,
+    y: 0,
+    w: 600,
+    h: 600,
+    fill: {
+      ...defaultRect().fill,
+      color: "#e0f0ff",
+      gradient: false,
+      opacity: 1,
+    },
+  };
+  const textBox = { x: 100, y: 100, w: 100, h: 30 };
+  const box = (el: { x: number; y: number; w: number; h: number }) => ({
+    x: el.x,
+    y: el.y,
+    w: el.w,
+    h: el.h,
+  });
+
+  it.each([
+    ["an unframed group under a text adds no fill", "none", false, "#ffffff"],
+    [
+      "an unframed group under a light rect leaves the rect",
+      "none",
+      true,
+      "#e0f0ff",
+    ],
+    [
+      "a browser frame under a text adds its bodyColor",
+      "browser",
+      false,
+      "#0b1220",
+    ],
+    [
+      "a terminal frame under a text adds its bodyColor",
+      "terminal",
+      false,
+      "#0b1220",
+    ],
+    [
+      "a phone frame under a text adds its bodyColor",
+      "phone",
+      false,
+      "#0b1220",
+    ],
+  ] as const)("%s", (_name, frame, withRect, hex) => {
+    const g = group(frame);
+    const placed: PlacedElement[] = [
+      { el: g, box: box(g), alpha: 1 },
+      ...(withRect ? [{ el: lightRect, box: box(lightRect), alpha: 1 }] : []),
+    ];
+    const res = resolveBackdropUnder(
+      textBox,
+      placed.length,
+      placed,
+      white(),
+      0,
+    );
+    expect(res).toMatchObject({ kind: "color", hex });
+  });
+
+  it.each([
+    ["none", []],
+    ["browser", ["#0b1220"]],
+  ] as const)(
+    "a text inside a group with frame %s sees what the group draws",
+    (frame, bgs) => {
+      const scene = white();
+      const text = {
+        ...defaultText(),
+        id: "t",
+        x: 100,
+        y: 300,
+        color: "#000000",
+      };
+      scene.elements = [
+        { ...group(frame), cw: 1080, ch: 1920, children: [text] },
+      ];
+      const low = inspectLayout(scene, [0]).filter(
+        (d) => d.code === "low_contrast",
+      );
+      expect(low.map((d) => d.bg)).toEqual(bgs);
+    },
+  );
+
+  it("a group saved before frames existed is parsed as unframed", () => {
+    const scene = white();
+    const { frame: _omit, ...old } = group("none");
+    const text = {
+      ...defaultText(),
+      id: "t",
+      x: 100,
+      y: 100,
+      color: "#000000",
+    };
+    scene.elements = [ElementSchema.parse(old), text];
+    const low = inspectLayout(scene, [0]).filter(
+      (d) => d.code === "low_contrast",
+    );
+    expect(low).toEqual([]);
+  });
+
+  it.each([
+    ["solid fill", { ...lightRect }, "#e0f0ff"],
+    [
+      "gradient fill",
+      {
+        ...lightRect,
+        fill: { ...lightRect.fill, gradient: true, color2: "#e0f0ff" },
+      },
+      "#e0f0ff",
+    ],
+    [
+      "badge",
+      {
+        ...createElement("badge"),
+        id: "b",
+        x: 0,
+        y: 0,
+        w: 600,
+        h: 600,
+        fill: { ...lightRect.fill, color: "#123456" },
+      },
+      "#123456",
+    ],
+    [
+      "bubble",
+      {
+        ...createElement("bubble"),
+        id: "u",
+        x: 0,
+        y: 0,
+        w: 600,
+        h: 600,
+        color: "#654321",
+      },
+      "#654321",
+    ],
+  ] as const)("a %s keeps adding its colour", (_name, el, hex) => {
+    const placed: PlacedElement[] = [
+      { el: el as never, box: box(el), alpha: 1 },
+    ];
+    const res = resolveBackdropUnder(textBox, 1, placed, white(), 0);
+    expect(res).toMatchObject({ kind: "color", hex });
   });
 });
