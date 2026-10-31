@@ -87,13 +87,15 @@ Agent tasks.
   bar and bezel case is out of scope and recorded as an idea.
 
 ## Tasks
-- [ ] 087/T001 [agent] Regression test (D2): one `it.each` over the R1 and R2 partitions,
+- [x] 087/T001 [agent] Regression test (D2): one `it.each` over the R1 and R2 partitions,
   asserting the backdrop hex; the `none` rows fail on `HEAD`, the rest pass — covers R1, R2, D2
-- [ ] 087/T002 [agent] Refactor: `hasFrame` in `frame.ts`, called by `drawGroup` and the
+- [x] 087/T002 [agent] Refactor: `hasFrame` in `frame.ts`, called by `drawGroup` and the
   descriptor's `framed`; no behaviour change, existing tests pass — covers D1
-- [ ] 087/T003 [agent] Guard the `bodyColor` branch of `getElementFills` with `hasFrame`; T001
+- [x] 087/T003 [agent] Guard the `bodyColor` branch of `getElementFills` with `hasFrame`; T001
   passes — covers R1, D1
-- [ ] 087/T004 [agent] `pnpm test`, `pnpm typecheck`, Biome on the touched files — covers R2
-- [ ] 087/T005 [agent] Verify: `pnpm build:cli`, restart the MCP server (or `pnpm lienzo` at
+- [x] 087/T004 [agent] `pnpm test`, `pnpm typecheck`, Biome on the touched files — covers R2
+- [x] 087/T005 [agent] Verify: `pnpm build:cli`, restart the MCP server (or `pnpm lienzo` at
   `HEAD`), `scene_inspect_layout` on `ringana` / `skin-perfection` at 1.5, 6.4, 9.2 s has no
   `low_contrast`; record `verified:` — covers R1
+  verified: 2026-10-31, `pnpm lienzo scene_inspect_layout` at `HEAD` gives 0 `low_contrast` at
+  1.5, 6.4 and 9.2 s (other diagnostics still reported); `pnpm test` 2436 passed, typecheck clean.
