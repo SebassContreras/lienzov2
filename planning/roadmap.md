@@ -29,6 +29,10 @@ Specs 050 and 065–084 are **retired**: they were all `done` under the previous
 | 084 | id-charset | done (retired) | 082 |
 | 085 | engineering-principles-alignment | done | 084 |
 | 086 | brand-guide | done | 085 |
+| 087 | contrast-unframed-groups | todo | — |
+| 088 | axis-scale-channels | todo | — |
+| 089 | speech-voiced-span | todo | — |
+| 090 | build-from-file | todo | — |
 
 ## Ideas
 
