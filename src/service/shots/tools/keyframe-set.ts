@@ -21,7 +21,7 @@ export const keyframeSet = defineTool({
   description:
     "Set a keyframe or configure loop options on an element's track (at root or inside nested " +
     "groups, by `id` or `group/child` path): `path` is an animatable field path or channel of " +
-    "its kind (see component_list, e.g. `x`, `fill.color`, `@rotate`, `@scale`), `t` seconds " +
+    "its kind (see component_list, e.g. `x`, `fill.color`, `@rotate`, `@scale`, `@scaleX`, `@scaleY` per axis), `t` seconds " +
     "within the scene (scene time, also for an element bound to a shot; its tracks move with " +
     "the shot when it changes, see shot_set), `value` a number or a color within the field's range (an opacity 0–1), else it fails. A keyframe already at `t` is replaced. " +
     "`easing` (default `auto`) shapes the segment to the next keyframe (`step` / `hold` holds " +

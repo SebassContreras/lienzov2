@@ -50,9 +50,11 @@ const CHANNEL_ROWS: readonly {
 }[] = [
   { path: "@rotate", label: "Rotación °", min: -360, max: 360, step: 1 },
   { path: "@scale", label: "Escala", min: 0, max: 4, step: 0.01 },
+  { path: "@scaleX", label: "Escala X", min: 0, max: 4, step: 0.01 },
+  { path: "@scaleY", label: "Escala Y", min: 0, max: 4, step: 0.01 },
 ];
 
-/** Rotation and scale, keyframed only: an edit always sets the keyframe at `t`. */
+/** Rotation and scale (whole and per axis), keyframed only: an edit always sets the keyframe at `t`. */
 export function ChannelSection({
   el,
   t,

@@ -161,7 +161,10 @@ Messages are Spanish; the server's `instructions` repeat these rules for every t
 - Two animation models: `anim` is the kind's motion (`{ in, loop, out }`; `anim: "fade"` is
   short for `{ in: { kind: "fade" } }`, a looping kind such as `"float"` for `loop`), timed
   from the element's shot; `tracks` are keyframes `[t, value, easing?]` by field path or
-  `@rotate` / `@scale`, with `repeat: "loop" | "pingpong"` and `until`, in scene time. Every
+  `@rotate` / `@scale` / `@scaleX` / `@scaleY`, with `repeat: "loop" | "pingpong"` and `until`,
+  in scene time. `@scaleX` / `@scaleY` grow or squash one axis around `origin` (a bar filling,
+  a stem growing up: `"@scaleX": [[0, 0], [1, 1]]` with `origin: "left"`); unlike `w` / `h` they
+  change only the drawing, not layout or text wrapping, and a negative value mirrors. Every
   `t` is scene time, camera keys included (`shot_set` takes the same short form and notes
   keys outside the shot). `keyframe_remove` with no key at `t` lists the track's times.
   A shot-bound element's tracks are timed from its shot's `start`: changing its `shot`

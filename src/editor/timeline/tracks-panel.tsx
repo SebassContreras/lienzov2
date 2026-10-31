@@ -13,6 +13,8 @@ import {
 } from "../../engine/tracks.ts";
 import type { Element } from "../../model/model.ts";
 import {
+  type Channel,
+  isChannel,
   type Keyframe,
   type TrackRepeat,
   trackEntry,
@@ -23,16 +25,18 @@ import {
 import type { Change } from "../field-editor.tsx";
 import type { Clock } from "../stage.tsx";
 
-const CHANNEL_LABELS: Record<string, string> = {
+const CHANNEL_LABELS: Record<Channel, string> = {
   "@rotate": "Rotación",
   "@scale": "Escala",
+  "@scaleX": "Escala X",
+  "@scaleY": "Escala Y",
 };
 
 /** The name a row shows: the field's label, or its path when the label depends on state. */
 function labelOf(el: Element, path: string): string {
   const f = fieldAt(descriptorOf(el.kind)?.fields ?? {}, path);
   const label = f && typeof f.label === "string" ? f.label : undefined;
-  return CHANNEL_LABELS[path] ?? label ?? path;
+  return (isChannel(path) ? CHANNEL_LABELS[path] : undefined) ?? label ?? path;
 }
 
 type Picked = { path: string; i: number };

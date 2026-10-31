@@ -62,7 +62,12 @@ export function trackEntry(
 }
 
 /** Transform channels and the value each has when nothing animates it. */
-export const CHANNELS = { "@rotate": 0, "@scale": 1 } as const;
+export const CHANNELS = {
+  "@rotate": 0,
+  "@scale": 1,
+  "@scaleX": 1,
+  "@scaleY": 1,
+} as const;
 
 export type Channel = keyof typeof CHANNELS;
 
@@ -112,7 +117,8 @@ export const TrackSchema: z.ZodType<Track> = z.union(
   ],
   {
     error: (issue) =>
-      issue.code === "invalid_union" && issue.errors.every((e) => e.some((i) => i.path.length === 0))
+      issue.code === "invalid_union" &&
+      issue.errors.every((e) => e.some((i) => i.path.length === 0))
         ? "Una pista es una lista de keyframes [[t, valor, easing?], …] o { keys: [...], repeat?, until? }"
         : undefined,
   },

@@ -7,6 +7,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
 import { groupElements, ungroupElement } from "../../engine/groups.ts";
+import { writeAt } from "../../engine/tracks.ts";
 import type { Element, Scene } from "../../model/model.ts";
 import {
   removeShotIn,
@@ -116,6 +117,25 @@ describe("editor and tools write the same JSON", () => {
 
     expect(fromEditor).toEqual({ shots: (await saved()).shots });
   });
+
+  it.each([
+    { channel: "@rotate", t: 0.5, value: 0.5 },
+    { channel: "@scale", t: 0.5, value: 0.5 },
+    { channel: "@scaleX", t: 0.5, value: 0.5 },
+    { channel: "@scaleX", t: 1, value: -1 },
+    { channel: "@scaleY", t: 0, value: 5 },
+  ])(
+    "a $channel keyframe set in the Transformación section matches keyframe_set ($value at $t s)",
+    async ({ channel, t, value }) => {
+      const { id } = await ok("element_add", { scene: "s", kind: "rect" });
+      const el = structuredClone((await saved()).elements[0] as Element);
+
+      writeAt(el, channel, value, t, () => {});
+      await ok("keyframe_set", { scene: "s", id, path: channel, t, value });
+
+      expect((await saved()).elements[0]?.tracks).toEqual(el.tracks);
+    },
+  );
 
   it("a track loop set in the timeline matches keyframe_set", async () => {
     const { id } = await ok("element_add", { scene: "s", kind: "rect" });

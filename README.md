@@ -164,7 +164,8 @@ To remove the transparent margin of a PNG, call `image_trim` on an image element
 Lienzo supports writing posts in a concise, human- and LLM-friendly format. The compact format
 allows declaring a complete post with minimal syntax: partial presets, layout anchors (`at`),
 automatic canvas fitting (`fit`), readable IDs, line connections (`from`/`to`), and shorthand
-animations and keyframe tracks (`[t, value, easing?]`).
+animations and keyframe tracks (`[t, value, easing?]`) on a field path or a channel (`@rotate`,
+`@scale`, and `@scaleX` / `@scaleY` to scale one axis around the element's origin).
 
 You can build and preview or save any compact post with the `scene_build` tool:
 

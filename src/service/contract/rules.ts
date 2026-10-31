@@ -306,6 +306,33 @@ export const RULES: readonly Rule[] = [
     ],
   },
   {
+    // the list after «se puede» proves each writer knows every channel, @scaleX / @scaleY too
+    id: "an element track is on a path its kind animates",
+    outcome: "refused",
+    message:
+      /«@scaleZ» no se puede animar en «rect» \(se puede: .*@rotate, @scale, @scaleX, @scaleY\)/,
+    violations: [
+      {
+        label: "unknown channel",
+        elements: [{ id: "x", kind: "rect", tracks: { "@scaleZ": [[0, 1]] } }],
+      },
+      {
+        label: "a known channel beside an unknown one",
+        elements: [
+          {
+            id: "x",
+            kind: "rect",
+            tracks: { "@scaleX": [[0, 2]], "@scaleZ": [[0, 1]] },
+          },
+        ],
+      },
+      {
+        label: "keyframe",
+        keyframe: { path: "@scaleZ", t: 0, value: 1 },
+      },
+    ],
+  },
+  {
     id: "a line with no shot between elements of different shots gets a notice",
     outcome: "notice",
     message: /línea «l» une «r1».*«r2».*no tiene toma propia/,
