@@ -92,15 +92,24 @@ Agent tasks.
   number box shows the value. Mitigation: same as «Escala» today; the number box takes any value.
 
 ## Tasks
-- [ ] 088/T001 [agent] Verify: `rg -n '@rotate|@scale|CHANNELS' src docs README.md .agents` finds only the derived uses (`trackPaths` in `component_list`, the schema, `scene-references`) and the hand-written places D2 and R3 name; record `verified:` with the list, and amend D2 if a place is missing — covers R2, D2
-- [ ] 088/T002 [agent] Tests, written first, beside `src/engine/animate.ts`: `test.each` over the R1 partitions, one row `{ case, tracks, anim, origin, t, scaleX, scaleY, originX, originY }` asserting `animate(el, t, scene).transform`; the golden-render invariant is the existing `src/test/render.test.ts`, run unchanged — covers R1, D1, D3
-- [ ] 088/T006 [agent] Contract test: a `RULES` entry (`src/service/contract/rules.ts`) "a channel track is kept with no notice", run by the matrix in every writer that takes tracks, with the R2 rows (each channel; `@scaleZ` boundary; `@scaleX` + `@scaleZ` compound) — covers R2, D2
-- [ ] 088/T007 [agent] Parity test in `src/service/contract/editor-parity.test.ts`: `it.each` over `@rotate`, `@scale`, `@scaleX`, `@scaleY` with rows `{ channel, t, value }` (values 0.5, −1, 5), a keyframe set by `writeAt` as the «Transformación» row does matches `keyframe_set` on the same channel — covers R4, D4
-- [ ] 088/T003 [agent] Add the channels to `CHANNELS` and `animate` (D1), and the timeline labels (D2) — covers R1, R2, D1, D2
-- [ ] 088/T008 [agent] Inspector rows «Escala X» / «Escala Y» in `CHANNEL_ROWS` — covers R4, D4
-- [ ] 088/T004 [agent] Docs: `docs/components.md`, `lienzo-usage`, the `keyframe_set` description and README's keyframe-tracks sentence; say `w`/`h` change layout, the channels only the drawing, and a negative value mirrors (text reads backwards) — covers R3, D1, D3
-- [ ] 088/T005 [agent] Verify: `pnpm build:cli`, restart the MCP server (or `pnpm lienzo` at `HEAD`); `scene_preview` of the Goal's pill at 0 s (not drawn), 0.5 s (half width, same centre, full height), 1 s (full size); `component_list` lists `@scaleX` / `@scaleY` for every kind; record `verified:` — covers R1, R2
-- [ ] 088/T009 [agent] Verify in the editor (`pnpm dev`, playwright-core with Edge): on a `Pill`, the «Transformación» section shows «Escala X» / «Escala Y»; moving «Escala X» to 0.5 at 0 s sets a keyframe and the pill draws half as wide around its origin, height unchanged; typing −1 mirrors it; the timeline row reads «Escala X»; record `verified:` — covers R4, D4
+- [x] 088/T001 [agent] Verify: `rg -n '@rotate|@scale|CHANNELS' src docs README.md .agents` finds only the derived uses (`trackPaths` in `component_list`, the schema, `scene-references`) and the hand-written places D2 and R3 name; record `verified:` with the list, and amend D2 if a place is missing — covers R2, D2
+  verified: 2026-10-31, the search finds `CHANNELS` read by `trackPaths` (`component_list`, `elements.ts` `checkTrackPath`, `scene-references`) and by `applyTracks`; hand-written: `CHANNEL_LABELS`, `CHANNEL_ROWS`, the `keyframe_set` description, `docs/components.md`, `lienzo-usage`. D2 needed no change.
+- [x] 088/T002 [agent] Tests, written first, beside `src/engine/animate.ts`: `test.each` over the R1 partitions, one row `{ case, tracks, anim, origin, t, scaleX, scaleY, originX, originY }` asserting `animate(el, t, scene).transform`; the golden-render invariant is the existing `src/test/render.test.ts`, run unchanged — covers R1, D1, D3
+  verified: 2026-10-31, `src/engine/animate.test.ts`, 17 rows, failed before T003 and pass after; `src/test/render.test.ts` passes unchanged in `pnpm test`.
+- [x] 088/T006 [agent] Contract test: a `RULES` entry (`src/service/contract/rules.ts`) "a channel track is kept with no notice", run by the matrix in every writer that takes tracks, with the R2 rows (each channel; `@scaleZ` boundary; `@scaleX` + `@scaleZ` compound) — covers R2, D2
+  verified: 2026-10-31, an unknown track path is refused (`unknown_path`), not noticed; the rule asserts the refusal's list names `@scaleX, @scaleY` in all 8 writers (15 cells failed before T003, pass after).
+- [x] 088/T007 [agent] Parity test in `src/service/contract/editor-parity.test.ts`: `it.each` over `@rotate`, `@scale`, `@scaleX`, `@scaleY` with rows `{ channel, t, value }` (values 0.5, −1, 5), a keyframe set by `writeAt` as the «Transformación» row does matches `keyframe_set` on the same channel — covers R4, D4
+  verified: 2026-10-31, 5 rows; the 3 new-channel rows failed before T003 and pass after.
+- [x] 088/T003 [agent] Add the channels to `CHANNELS` and `animate` (D1), and the timeline labels (D2) — covers R1, R2, D1, D2
+  verified: 2026-10-31, `pnpm typecheck` clean; T002, T006, T007 pass.
+- [x] 088/T008 [agent] Inspector rows «Escala X» / «Escala Y» in `CHANNEL_ROWS` — covers R4, D4
+  verified: 2026-10-31, `pnpm typecheck`, biome on the file; checked in the editor in T009.
+- [x] 088/T004 [agent] Docs: `docs/components.md`, `lienzo-usage`, the `keyframe_set` description and README's keyframe-tracks sentence; say `w`/`h` change layout, the channels only the drawing, and a negative value mirrors (text reads backwards) — covers R3, D1, D3
+  verified: 2026-10-31, `components-doc` and `descriptions` tests pass.
+- [x] 088/T005 [agent] Verify: `pnpm build:cli`, restart the MCP server (or `pnpm lienzo` at `HEAD`); `scene_preview` of the Goal's pill at 0 s (not drawn), 0.5 s (half width, same centre, full height), 1 s (full size); `component_list` lists `@scaleX` / `@scaleY` for every kind; record `verified:` — covers R1, R2
+  verified: 2026-10-31, `pnpm build:cli`, `pnpm lienzo` at `HEAD` (QA project removed after): 0 s nothing drawn, 0.5 s 210 px wide centred on x = 400, same height, 1 s 420 px; `component_list` lists both channels in all 24 kinds.
+- [x] 088/T009 [agent] Verify in the editor (`pnpm dev`, playwright-core with Edge): on a `Pill`, the «Transformación» section shows «Escala X» / «Escala Y»; moving «Escala X» to 0.5 at 0 s sets a keyframe and the pill draws half as wide around its origin, height unchanged; typing −1 mirrors it; the timeline row reads «Escala X»; record `verified:` — covers R4, D4
+  verified: 2026-10-31, Edge via playwright-core on `pnpm exec vite`: «Transformación» shows «Escala X» / «Escala Y»; 0.5 in «Escala X» stores `@scaleX` `[{ t: 0, value: 0.5 }]` and draws the pill half as wide, centred, same height; −1 mirrors it; the timeline row reads «Escala X». Full `pnpm test`: 2473 pass.
 
 ## Changes
 - 2026-10-31: R4 and D4 added before any task ran. Why: the editor is the product; without

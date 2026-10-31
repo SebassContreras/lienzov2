@@ -30,7 +30,7 @@ Specs 050 and 065–084 are **retired**: they were all `done` under the previous
 | 085 | engineering-principles-alignment | done | 084 |
 | 086 | brand-guide | done | 085 |
 | 087 | contrast-unframed-groups | done | — |
-| 088 | axis-scale-channels | todo | — |
+| 088 | axis-scale-channels | done | — |
 | 089 | speech-voiced-span | todo | — |
 | 090 | build-from-file | todo | — |
 
