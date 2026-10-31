@@ -26,20 +26,7 @@ This document defines the craftsmanship, code quality standards, and software en
 - Place an anti-corruption layer in `services/` or `adapters/` declaring your own project-scoped interface wrapper.
 - Inject that interface into domain logic. Vendors must be swappable without altering domain code.
 
-### 5. Simplicity / Small Interfaces / Pure Functions (Doubt)
-- Prefer small, minimal seams. Every state transformation should be pure and deterministic where feasible.
-- Functions take plain data and return plain data without hidden context or ambient side-effects.
-
-### 6. Systematic Input Partitioning, Contracts & Invariants
-- (Governed in detail by [TESTING.md](./TESTING.md)) Cover nominal cases, boundary values, malformed/empty inputs, and compound errors.
-- Contract test suites over fragmented tests; root-cause regressions assert generalized equivalence classes rather than isolated payloads.
-
-### 7. Test Hygiene & Parameterization
-- (Governed in detail by [TESTING.md](./TESTING.md)) AAA / Given-When-Then structure with descriptive behavioral names.
-- Parameterized table-driven tests (`test.each`) over copy-pasted blocks; no conditional branches (`if`/`else`) or manual loops in test execution blocks.
-- Boundary mocking only: never mock the unit under test.
-
-### 8. Follow the Stack's Standards
+### 5. Follow the Stack's Standards
 - Strictly adhere to official conventions, idiomatic patterns, and style guides of the language and framework in use (TypeScript, Vite, Vitest, Biome).
 - Harmonize with the existing codebase before introducing external stylistic preferences.
 - Standard casing:
@@ -50,7 +37,11 @@ This document defines the craftsmanship, code quality standards, and software en
   - `UPPER_SNAKE_CASE`: true constants, configuration globals, enum keys.
 - Language policy: UI text and error messages in Spanish (A16); code, docs, and commits in English.
 
-### 9. Validate with Research — Only When It Changes the Decision
+### 6. Document Trade-offs
+- Every significant technical choice has trade-offs.
+- Document pros, cons, and active mitigations directly in the relevant spec (`D<n>`), code comments, or `CHANGES.md`.
+
+### 7. Validate with Research — Only When It Changes the Decision
 - Research is not a ritual. Look it up only when at least one holds:
   - the choice is hard to reverse (file format, protocol, public surface, contract shape);
   - the answer is a fact outside this repository (NLE timeline conventions, SMPTE, RFCs, Vite chunking, version behaviour, licence terms);
@@ -59,10 +50,6 @@ This document defines the craftsmanship, code quality standards, and software en
 - Source order: official specification or documentation, then maintainer issue or release notes, then vendor blog. One or two sources per question; stop when a primary source settles it.
 - Cite what you used where the decision lives — `D<n>` in the spec, a code comment, or `CHANGES.md` — as `Source: <url> (accessed YYYY-MM-DD)`.
 - A non-obvious claim that could have a source and has none is a review finding.
-
-### 10. Document Trade-offs
-- Every significant technical choice has trade-offs.
-- Document pros, cons, and active mitigations directly in the relevant spec (`D<n>`), code comments, or `CHANGES.md`.
 
 ---
 
@@ -73,6 +60,7 @@ This document defines the craftsmanship, code quality standards, and software en
 - **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`) (A17).
 - **Dependencies:** every runtime dependency must be MIT-compatible at zero cost (A18).
 - **Lint, format, types:** Biome and `pnpm typecheck` (A14). Verify with `pnpm typecheck`; during a task check or format only the files or folders touched, never the whole repo with `pnpm lint` or `biome check`.
+- **Pure functions:** state transformations take plain data and return plain data, with no hidden context or ambient side effects (A3, A24, A27).
 - **Deterministic time:** never draw with wall-clock time; everything takes `t` (seconds within the loop) so exports are deterministic (A3, A24).
 - **Docs travel with behavior:** a change of behavior updates `README.md`, `docs/components.md`, the `lienzo-usage` skill (`.agents/skills/lienzo-usage/`) and the tool's description in the same task. A rule every tool shares (arguments, failures, messages) goes once in `RULES` (`src/mcp/server.ts`, the server's `instructions`), not in every description.
 

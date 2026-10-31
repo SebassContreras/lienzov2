@@ -132,3 +132,9 @@ Why: `src/service` held 165 files, 32 of them loose, and a tool, its logic and i
 - What Changed: §9 now requires research only when the choice is hard to reverse, depends on an outside fact, or breaks a factual tie, and cites sources as `Source: <url> (accessed YYYY-MM-DD)`. §1 and §10 headings match the spectrace template so `spectrace-init --upgrade` recognises them. AGENTS.md principle lists name DRY, research and trade-offs; spectrace skills updated to the current suite.
 - Why: Spectrace added principle 7: research is required only when the choice is hard to reverse, depends on a fact outside the repository, or breaks a factual tie. Mandatory research on every choice invites invented citations and ritual browsing; gating it keeps citations where they change the decision.
 - Replaced Items: §9 "Research & Cite Sources for Non-Obvious Decisions".
+
+## 2026-10-31 — seven engineering principles, as in the spectrace template
+- Scope: `ENGINEERING.md` principles and Project Standards.
+- What Changed: `ENGINEERING.md` lists the seven spectrace principles in template order: 1 KISS/YAGNI, 2 SRP, 3 DRY via composition, 4 anti-corruption layer / DIP, 5 stack standards, 6 trade-offs, 7 research. The old §6 (partitioning, contracts, invariants) and §7 (test hygiene) are dropped: `TESTING.md` already states both in full. The old §5 (small interfaces, pure functions) becomes the "Pure functions" bullet of Project Standards, tied to A3, A24 and A27. Old §8, §10 and §9 are now §5, §6 and §7 with unchanged wording.
+- Why: spectrace audits cite principles by number (`ENG-1` … `ENG-7`); with ten sections numbered differently, a citation such as `ENG-7` pointed at test hygiene instead of research, and spec audits had to stop. No spec or contract cited a principle number, so nothing else needed renumbering.
+- Replaced Items: the ten-principle layout recorded by 085 ("engineering principles alignment across specs and contracts").
